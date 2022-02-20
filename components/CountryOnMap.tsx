@@ -1,18 +1,14 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-delete L.Icon.Default.prototype!._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon.src,
-  iconRetinaUrl: markerIcon2x.src,
-  shadowUrl: markerShadow.src,
+const markerIcon = icon({
+  iconUrl: "/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [0, -41],
 });
 
 interface CountryMapProps {
@@ -37,7 +33,7 @@ const CountryOnMap: React.FunctionComponent<CountryMapProps> = ({
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[latitude, longitude]}>
+        <Marker icon={markerIcon} position={[latitude, longitude]}>
           {countryName && (
             <Popup>
               <Typography>{countryName}</Typography>
