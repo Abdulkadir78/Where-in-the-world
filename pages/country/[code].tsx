@@ -1,5 +1,6 @@
 import type { NextPage, GetServerSideProps } from "next";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
@@ -11,6 +12,10 @@ import { API_URL } from "../../constants";
 import Meta from "../../components/Meta";
 import BackBtn from "../../components/BackBtn";
 import TextWithLabel from "../../components/TextWithLabel";
+
+const CountryOnMap = dynamic(() => import("../../components/CountryOnMap"), {
+  ssr: false,
+});
 
 interface Country {
   flags: { svg: string };
@@ -24,10 +29,11 @@ interface Country {
   topLevelDomain: string[];
   languages: { name: string }[];
   currencies: { name: string }[];
+  latlng: [number, number];
 }
 
 const fieldsToInclude =
-  "name,nativeName,capital,region,subregion,population,flags,alpha2Code,topLevelDomain,languages,currencies,borders";
+  "name,nativeName,capital,region,subregion,population,flags,alpha2Code,topLevelDomain,languages,currencies,borders,latlng";
 
 const CountryById: NextPage<{
   country: Country;
@@ -125,6 +131,14 @@ const CountryById: NextPage<{
           </Grid>
         </>
       )}
+
+      <Box sx={{ mb: 5, mt: 10 }}>
+        <CountryOnMap
+          latitude={country.latlng[0]}
+          longitude={country.latlng[1]}
+          countryName={country.name}
+        />
+      </Box>
     </Container>
   );
 };
