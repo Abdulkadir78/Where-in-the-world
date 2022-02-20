@@ -22,7 +22,7 @@ const CountryOnMap: React.FunctionComponent<CountryMapProps> = ({
   longitude,
   countryName,
 }) => {
-  return (
+  return latitude != undefined && longitude != undefined ? (
     <Paper sx={{ p: { md: 1 } }}>
       <MapContainer
         center={[latitude, longitude]}
@@ -36,13 +36,13 @@ const CountryOnMap: React.FunctionComponent<CountryMapProps> = ({
         <Marker icon={markerIcon} position={[latitude, longitude]}>
           {countryName && (
             <Popup>
-              <Typography>{countryName}</Typography>
+              <Typography align="center">{countryName}</Typography>
             </Popup>
           )}
         </Marker>
       </MapContainer>
     </Paper>
-  );
+  ) : null;
 };
 
 export default CountryOnMap;
